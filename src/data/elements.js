@@ -6,7 +6,7 @@ const elements = [
   { symbol: “Be”, name: “Beryllium”, number: 4 }, 
   { symbol: “B”, name: “Boron”, number: 5 }, 
   { symbol: “C”, name: “Carbon”, number: 6 }, 
-  { symbol: “N”, name: “Nitrogen”, number: 7}, 
+  { symbol: “N”, name: “Nitrogen”, number: 7 }, 
 ];
 
 export default elements;
