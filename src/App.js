@@ -1,12 +1,16 @@
 // src/App.js
 import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { signInWithPopup, signOut } from "firebase/auth";
 import { auth, provider } from "./firebase-config";
+
+import PeriodicTable from "./components/PeriodicTable";
+import LessonPage from "./pages/LessonPage";
 
 function App() {
   const [user, setUser] = useState(null);
 
-  // Hàm đăng nhập Google
+  // Đăng nhập Google
   const handleLogin = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
@@ -18,7 +22,7 @@ function App() {
       });
   };
 
-  // Hàm đăng xuất
+  // Đăng xuất
   const handleLogout = () => {
     signOut(auth)
       .then(() => {
@@ -30,18 +34,30 @@ function App() {
       });
   };
 
+  // Giao diện chính
   return (
-    <div style={{ textAlign: "center", marginTop: 100 }}>
-      <h1>Ứng dụng Học Tập</h1>
-      {user ? (
-        <>
-          <p>Xin chào, {user.displayName}</p>
-          <button onClick={handleLogout}>Đăng xuất</button>
-        </>
-      ) : (
-        <button onClick={handleLogin}>Đăng nhập bằng Google</button>
+    <Router>
+      <div style={{ textAlign: "center", paddingTop: 20 }}>
+        <h1>Ứng dụng Học Tập</h1>
+
+        {user ? (
+          <>
+            <p>Xin chào, {user.displayName}</p>
+            <button onClick={handleLogout}>Đăng xuất</button>
+          </>
+        ) : (
+          <button onClick={handleLogin}>Đăng nhập bằng Google</button>
+        )}
+      </div>
+
+      {/* Chỉ hiện bảng tuần hoàn và trang bài học nếu đã đăng nhập */}
+      {user && (
+        <Routes>
+          <Route path="/" element={<PeriodicTable />} />
+          <Route path="/lesson/:symbol" element={<LessonPage />} />
+        </Routes>
       )}
-    </div>
+    </Router>
   );
 }
 
